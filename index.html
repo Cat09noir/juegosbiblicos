@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego Bíblico</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Pantalla de inicio -->
+  <div id="pantallaInicio" class="activa">
+    <h1>Juego Bíblico</h1>
+    <label for="nombreJugador">Ingresa tu nombre:</label>
+    <input type="text" id="nombreJugador" required>
+    <label for="selectorDificultad">Dificultad:</label>
+    <button onclick="iniciarJuego()">Comenzar</button>
+  </div>
+
+  <!-- Pantalla del juego -->
+  <div id="pantallaJuego" class="contenedor">
+    <h1>Juego Bíblico</h1>
+    <p id="jugadorActual"></p>
+    <p id="pregunta"></p>
+    <div id="opciones"></div>
+    <div id="barraTiempo">
+      <div id="barraTiempoProgreso"></div>
+    </div>      
+    <p id="resultado"></p>
+    <p id="puntaje">Puntaje: 0</p>
+    <button onclick="siguientePregunta()" id="btnSiguiente" style="display:none;">Siguiente</button>  </div>
+
+    <div id="pantallaFinal" class="pantalla">
+      <h2>🎉 Juego Terminado</h2>
+      <p id="resumenFinal"></p>
+      <p id="puntajeMaximo"></p>
+      <div id="estrellasFinales"></div>
+      <div id="rankingJugadores"></div>
+      <button onclick="reiniciarJuego()">Volver a Jugar</button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_DOMINIO.firebaseapp.com",
+    projectId: "TU_ID",
+    storageBucket: "TU_BUCKET",
+    messagingSenderId: "TU_ID",
+    appId: "TU_APP_ID",
+    databaseURL: "https://TU_ID.firebaseio.com"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+  <script src="script.js"></script>
+</body>
+</html>

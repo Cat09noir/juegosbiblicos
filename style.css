@@ -1,0 +1,159 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #e0f7fa, #fff3e0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedores generales */
+.contenedor {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contenedor:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Elementos de texto */
+h1 {
+    color: #00796b;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+#pregunta, #puntaje, #resultado {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#puntaje {
+    color: #444;
+}
+
+/* Resultado de respuestas */
+#resultado.correcto {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+#resultado.incorrecto {
+    color: #c62828;
+    font-weight: bold;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Opciones */
+#opciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#opciones button {
+    padding: 12px;
+    background-color: #00838f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1em;
+}
+
+#opciones button:hover {
+    background-color: #005f6b;
+    transform: scale(1.05);
+}
+
+/* Botones generales */
+button {
+    padding: 12px 20px;
+    border: none;
+    margin: 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnInicio {
+    background-color: #43a047;
+    color: white;
+}
+
+#btnInicio:hover {
+    background-color: #2e7d32;
+    transform: scale(1.05);
+}
+
+#btnSiguiente {
+    background-color: #1e88e5;
+    color: white;
+    display: none;
+}
+
+#btnSiguiente:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
+/* Animación de aparición */
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Barra de tiempo */
+#barraTiempo {
+    width: 100%;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+#barraTiempoProgreso {
+    height: 100%;
+    background-color: #43a047;
+    width: 100%;
+    transition: width 1s linear;
+}
+
+/* Pantallas dinámicas */
+#pantallaInicio,
+#pantallaJuego,
+#pantallaFinal {
+    display: none;
+}
+
+.activa {
+    display: block !important;
+
+}

@@ -1,0 +1,163 @@
+import json
+import random
+
+# Listas de personajes y libros basadas en la Biblia Reina Valera
+old_testament_chars = [
+    "Adán", "Eva", "Caín", "Abel", "Noé", "Abraham", "Sara", "Isaac",
+    "Rebeca", "Jacob", "Esaú", "José", "Moisés", "Josué", "Gedeón",
+    "Rut", "Samuel", "David", "Salomón", "Elías", "Isaías", "Jeremías",
+    "Daniel", "Ezequiel"
+]
+
+new_testament_chars = [
+    "María", "José", "Juan el Bautista", "Pedro", "Juan", "Santiago",
+    "Pablo", "Marcos", "Lucas", "Mateo", "Esteban", "Lázaro",
+    "Marta", "María Magdalena"
+]
+
+all_chars = old_testament_chars + new_testament_chars
+
+old_books = [
+    "Génesis", "Éxodo", "Levítico", "Números", "Deuteronomio", "Josué",
+    "Jueces", "Rut", "1 Samuel", "2 Samuel", "1 Reyes", "2 Reyes",
+    "1 Crónicas", "2 Crónicas", "Esdras", "Nehemías", "Job", "Salmos",
+    "Proverbios", "Eclesiastés", "Cantar de los Cantares", "Isaías",
+    "Jeremías", "Lamentaciones", "Ezequiel", "Daniel", "Oseas", "Joel",
+    "Amós", "Abdías", "Jonás", "Miqueas", "Nahum", "Habacuc", "Sofonías",
+    "Hageo", "Zacarías", "Malaquías"
+]
+
+new_books = [
+    "Mateo", "Marcos", "Lucas", "Juan", "Hechos", "Romanos", "1 Corintios",
+    "2 Corintios", "Gálatas", "Efesios", "Filipenses", "Colosenses",
+    "1 Tesalonicenses", "2 Tesalonicenses", "1 Timoteo", "2 Timoteo",
+    "Tito", "Filemón", "Hebreos", "Santiago", "1 Pedro", "2 Pedro",
+    "1 Juan", "2 Juan", "3 Juan", "Judas", "Apocalipsis"
+]
+
+# Definición de funciones generadoras para cada plantilla.
+# Cada función retorna un diccionario con:
+#   - "id": un identificador único
+#   - "pregunta": enunciado (se agrega "Variante {i}" para diferenciar)
+#   - "opciones": listado de 4 opciones (orden aleatorio)
+#   - "correcta": índice (0 a 3) de la respuesta correcta en "opciones"
+
+def generate_personaje_question(i):
+    personaje = random.choice(all_chars)
+    distractores = random.sample([p for p in all_chars if p != personaje], 3)
+    options = [personaje] + distractores
+    random.shuffle(options)
+    correct_index = options.index(personaje)
+    question_text = f"¿Quién fue {personaje} según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_libro_creacion_question(i):
+    correct = "Génesis"
+    distractors = random.sample([b for b in old_books if b != "Génesis"], 3)
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿En qué libro se relata la historia de la creación según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_nuevo_testamento_libro_question(i):
+    correct = random.choice(new_books)
+    # Para confundir, los distractores se eligen del Antiguo Testamento
+    distractors = random.sample(old_books, 3)
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Cuál de los siguientes libros pertenece al Nuevo Testamento según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_event_noe_question(i):
+    correct = "El Diluvio Universal"
+    distractors = ["La Torre de Babel", "La Creación de Adán y Eva", "El Éxodo de Egipto"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Qué evento involucra a Noé según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_exodo_question(i):
+    correct = "Moisés"
+    distractors = ["Josué", "Abraham", "David"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Quién liberó a los israelitas de la esclavitud en Egipto según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_rey_sabiduria_question(i):
+    correct = "Salomón"
+    distractors = ["David", "Moisés", "Samuel"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Qué rey es conocido por su gran sabiduría y por construir el templo de Jerusalén según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_bodas_cana_question(i):
+    correct = "Convirtió el agua en vino"
+    distractors = ["Multiplicó los panes", "Sanó a un ciego", "Resucitó a Lázaro"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Qué milagro realizó Jesús en las bodas de Caná según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_traicion_question(i):
+    correct = "Judas Iscariote"
+    distractors = ["Pedro", "Tomás", "Andrés"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Quién traicionó a Jesús según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_sermon_question(i):
+    correct = "Mateo"
+    distractors = ["Marcos", "Lucas", "Juan"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿En qué Evangelio se encuentra principalmente el relato del Sermón del Monte según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+def generate_epistolas_question(i):
+    correct = "Pablo"
+    distractors = ["Pedro", "Juan", "Santiago"]
+    options = [correct] + distractors
+    random.shuffle(options)
+    correct_index = options.index(correct)
+    question_text = f"¿Quién es el autor predominante de las Epístolas en el Nuevo Testamento según la Biblia Reina Valera? Variante {i}"
+    return {"id": i, "pregunta": question_text, "opciones": options, "correcta": correct_index}
+
+# Lista de funciones generadoras (10 plantillas)
+generators = [
+    generate_personaje_question,
+    generate_libro_creacion_question,
+    generate_nuevo_testamento_libro_question,
+    generate_event_noe_question,
+    generate_exodo_question,
+    generate_rey_sabiduria_question,
+    generate_bodas_cana_question,
+    generate_traicion_question,
+    generate_sermon_question,
+    generate_epistolas_question
+]
+
+# Generamos 1000 preguntas utilizando las plantillas en forma cíclica
+questions = []
+for i in range(1, 1001):
+    gen = generators[(i - 1) % len(generators)]
+    questions.append(gen(i))
+
+# Estructura final del JSON
+data = {"preguntas": questions}
+
+# Exporta el JSON a un archivo (o bien, puedes imprimirlo)
+with open("preguntas_biblia.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+print("Archivo 'preguntas_biblia.json' generado con 1000 preguntas.")
