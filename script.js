@@ -1,5 +1,3 @@
-// script.js optimizado con carga externa de preguntas y sin errores
-
 let nombreJugador = "";
 let puntaje = 0;
 let puntajeMaximo = localStorage.getItem("puntajeMaximo") || 0;
@@ -18,7 +16,6 @@ function iniciarJuego() {
         alert("Por favor, ingresa tu nombre.");
         return;
     }
-
     nombreJugador = inputNombre.value.trim();
     cambiarPantalla("pantallaInicio", "pantallaJuego");
     document.getElementById("jugadorActual").innerText = `Jugador: ${nombreJugador}`;
@@ -29,7 +26,12 @@ function comenzarJuego() {
     fetch("preguntas_1000.json")
         .then(res => res.json())
         .then(data => {
-            preguntas = data.sort(() => Math.random() - 0.5).slice(0, 10);
+            // Si el JSON es un arreglo (como en tu ejemplo) o está dentro de una propiedad:
+            const preguntasArray = Array.isArray(data) ? data : data.preguntas;
+            if (!Array.isArray(preguntasArray)) {
+                throw new Error("La estructura del JSON es incorrecta.");
+            }
+            preguntas = preguntasArray.sort(() => Math.random() - 0.5).slice(0, 10);
             indiceActual = 0;
             puntaje = 0;
             mostrarPregunta();
@@ -47,14 +49,18 @@ function mostrarPregunta() {
     const preguntaActual = preguntas[indiceActual];
     document.getElementById("pregunta").innerText = preguntaActual.pregunta;
 
+    // Convertimos las opciones (objeto) a un arreglo usando las claves en el orden a, b, c, d
+    const keys = ["a", "b", "c", "d"];
     const opcionesDiv = document.getElementById("opciones");
     opcionesDiv.innerHTML = "";
 
-    preguntaActual.opciones.forEach((opcion, index) => {
+    keys.forEach(key => {
+        const textoOpcion = preguntaActual.opciones[key];
         const boton = document.createElement("button");
-        boton.innerText = opcion;
+        boton.innerText = textoOpcion;
         boton.classList.add("btn-opcion");
-        boton.onclick = () => verificarRespuesta(index);
+        // Pasamos la clave (letra) al verificar la respuesta
+        boton.onclick = () => verificarRespuesta(key);
         opcionesDiv.appendChild(boton);
     });
 
@@ -62,33 +68,35 @@ function mostrarPregunta() {
     document.getElementById("puntaje").innerText = `Puntaje: ${puntaje}`;
     document.getElementById("btnSiguiente").style.display = "none";
 
+    // Reinicia la barra de tiempo
     barraProgreso.style.width = "100%";
     temporizador = setInterval(() => {
         tiempo--;
         barraProgreso.style.width = `${(tiempo / 15) * 100}%`;
         if (tiempo <= 0) {
             clearInterval(temporizador);
-            verificarRespuesta(-1);
+            verificarRespuesta(null); // indicamos que el tiempo se agotó
         }
     }, 1000);
 }
 
-function verificarRespuesta(indiceSeleccionado) {
+function verificarRespuesta(opcionSeleccionada) {
     clearInterval(temporizador);
-    const correcta = preguntas[indiceActual].correcta;
+    const preguntaActual = preguntas[indiceActual];
+    const correcta = preguntaActual.respuesta_correcta; // letra (por ejemplo, "b")
     const resultado = document.getElementById("resultado");
 
-    if (indiceSeleccionado === correcta) {
+    if (opcionSeleccionada === correcta) {
         resultado.innerText = "✅ ¡Correcto!";
         resultado.className = "correcto fade-in";
         sonidoCorrecto.play();
         puntaje += 10;
-    } else if (indiceSeleccionado === -1) {
-        resultado.innerText = `⏰ Tiempo agotado. La respuesta era: ${preguntas[indiceActual].opciones[correcta]}`;
+    } else if (opcionSeleccionada === null) {
+        resultado.innerText = `⏰ Tiempo agotado. La respuesta era: ${preguntaActual.opciones[correcta]}`;
         resultado.className = "incorrecto fade-in";
         sonidoIncorrecto.play();
     } else {
-        resultado.innerText = `❌ Incorrecto. La respuesta era: ${preguntas[indiceActual].opciones[correcta]}`;
+        resultado.innerText = `❌ Incorrecto. La respuesta era: ${preguntaActual.opciones[correcta]}`;
         resultado.className = "incorrecto fade-in";
         sonidoIncorrecto.play();
     }
@@ -96,6 +104,7 @@ function verificarRespuesta(indiceSeleccionado) {
     document.getElementById("puntaje").innerText = `Puntaje: ${puntaje}`;
     document.getElementById("btnSiguiente").style.display = "inline-block";
 
+    // Deshabilita todos los botones de respuesta
     Array.from(document.getElementById("opciones").children).forEach(btn => btn.disabled = true);
 }
 
